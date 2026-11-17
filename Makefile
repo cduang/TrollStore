@@ -1,6 +1,10 @@
 TOPTARGETS := all clean update
 
-$(TOPTARGETS): pre_build make_fastPathSign make_roothelper make_axiombox make_trollhelper_embedded make_trollhelper_package assemble_axiombox build_installer15 build_installer64e make_axiombox_lite
+# build_installer15 / build_installer64e require Victim/InstallerVictim.ipa, which
+# is intentionally NOT shipped in this repo. They are only needed to install
+# TrollStore on iOS 15 / 17 via an installer app. For personal dev builds that
+# are installed through an existing TrollStore, the main AxiomBox.tar is enough.
+$(TOPTARGETS): pre_build make_fastPathSign make_roothelper make_axiombox make_trollhelper_embedded make_trollhelper_package assemble_axiombox make_axiombox_lite
 
 pre_build:
 	@rm -rf ./_build 2>/dev/null || true

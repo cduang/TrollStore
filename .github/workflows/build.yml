@@ -7,7 +7,9 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
+    # NOTE: macos-13 was retired 2025-12-04 and macos-14 on 2026-11-02.
+    # macos-15 (arm64 / Apple Silicon) is a currently supported label.
+    runs-on: macos-15
     steps:
       - name: Checkout (with submodules)
         uses: actions/checkout@v4
@@ -15,41 +17,60 @@ jobs:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Select Xcode 15
+      - name: Select Xcode 16.4
+        # macOS 15 image ships Xcode 16.0-16.4 and 26.x; Xcode 15.x is NOT present.
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '15.2'
+          xcode-version: '16.4'
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          sw_vers
 
       - name: Install build dependencies
         run: |
           brew update
-          brew install dpkg ldid make libplist openssl@3 libarchive pkg-config
-          # GNU make 放到 PATH 前面（theos 需要 gmake）
+          brew install dpkg ldid make libplist openssl@3 libarchive pkg-config xz
+          # Theos requires GNU make as "make"
           echo "$(brew --prefix make)/libexec/gnubin" >> "$GITHUB_PATH"
+          # fastPathSign uses pkg-config --libs libcrypto (from openssl@3)
+          echo "PKG_CONFIG_PATH=$(brew --prefix openssl@3)/lib/pkgconfig" >> "$GITHUB_ENV"
 
       - name: Setup Theos
         run: |
-          git clone --recursive https://github.com/theos/theos.git $HOME/theos
+          git clone --recursive https://github.com/theos/theos.git "$HOME/theos"
           echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
-          # iOS SDK（编译目标 16.x，兼容 iOS 14+ 部署）
-          git clone --depth 1 https://github.com/theos/sdks.git $HOME/theos/sdks
 
-      - name: Verify SDKs
-        run: ls "$THEOS/sdks" | head -20
-
-      - name: Build (main chain, no victim/installer IPA)
+      - name: Install iOS 16.5 SDK
+        # Makefiles pin TARGET := iphone:clang:16.5:14.0, so the patched
+        # iPhoneOS16.5.sdk (with private symbols) from theos/sdks is required.
+        # sparse-checkout keeps the download small (the repo holds many SDKs).
         run: |
-          make pre_build
-          make make_fastPathSign
-          make make_roothelper
-          make make_axiombox FINALPACKAGE=1
-          make make_axiombox_lite FINALPACKAGE=1
-          make assemble_axiombox
+          mkdir -p "$HOME/theos/sdks"
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/theos/sdks.git "$HOME/theos/sdks"
+          cd "$HOME/theos/sdks"
+          git sparse-checkout set iPhoneOS16.5.sdk
+          echo "== installed SDKs =="
+          ls -1 "$HOME/theos/sdks"
+
+      - name: Verify toolchain
+        run: |
+          which make && make --version | head -1
+          pkg-config --modversion libcrypto
+          ls "$THEOS/sdks/iPhoneOS16.5.sdk" >/dev/null && echo "iOS 16.5 SDK OK"
+
+      - name: Build (main chain, installer IPA targets skipped)
+        # Root Makefile relies on $(MAKECMDGOALS) forwarding, so the correct
+        # invocation is plain `make all`. build_installer15/64e were removed
+        # from the `all` dependency chain because they need the unshipped
+        # Victim/InstallerVictim.ipa (only needed for iOS 15/17 installer flow).
+        run: make all
 
       - name: List artifacts
         run: ls -lh _build/
 
-      - name: Upload TrollStore tar (install via TrollStore)
+      - name: Upload AxiomBox tar (install via TrollStore)
         uses: actions/upload-artifact@v4
         with:
           name: AxiomBox-tar
