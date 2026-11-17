@@ -63,11 +63,13 @@ jobs:
           ls "$THEOS/sdks/iPhoneOS16.5.sdk" >/dev/null && echo "iOS 16.5 SDK OK"
 
       - name: Build (main chain, installer IPA targets skipped)
-        # Root Makefile relies on $(MAKECMDGOALS) forwarding, so the correct
-        # invocation is plain `make all`. build_installer15/64e were removed
-        # from the `all` dependency chain because they need the unshipped
-        # Victim/InstallerVictim.ipa (only needed for iOS 15/17 installer flow).
-        run: make all
+        # Root Makefile forwards $(MAKECMDGOALS) to every sub-make. Running
+        # `make all` would pass the literal "all" down, but sub-Makefiles
+        # (e.g. fastPathSign) have NO `all` target -> "No rule to make target".
+        # A bare `make` leaves MAKECMDGOALS empty, so each sub-make uses its own
+        # default target. build_installer15/64e were removed from the `all`
+        # chain because they need the unshipped Victim/InstallerVictim.ipa.
+        run: make
 
       - name: List artifacts
         run: ls -lh _build/
