@@ -99,7 +99,7 @@ extern UIImage* imageWithSize(UIImage* image, CGSize size);
 
 			if(!_cachedAppBundleName)
 			{
-				NSString* errorDescription = @"Unable to locate app bundle inside the .IPA archive.";
+				NSString* errorDescription = NSLocalizedString(@"Unable to locate app bundle inside the .IPA archive.", nil);
 				outError = [NSError errorWithDomain:AxiomBoxErrorDomain code:301 userInfo:@{NSLocalizedDescriptionKey : errorDescription}];
 			}
 		}
@@ -181,7 +181,7 @@ extern UIImage* imageWithSize(UIImage* image, CGSize size);
 
 	if(!_cachedInfoDictionary)
 	{
-		NSString* errorDescription = @"Unable to locate Info.plist inside app bundle.";
+		NSString* errorDescription = NSLocalizedString(@"Unable to locate Info.plist inside app bundle.", nil);
 		return [NSError errorWithDomain:AxiomBoxErrorDomain code:302 userInfo:@{NSLocalizedDescriptionKey : errorDescription}];
 	}
 	
@@ -220,7 +220,7 @@ extern UIImage* imageWithSize(UIImage* image, CGSize size);
 				struct archive_entry* mainBinaryEntry = [self archiveEntryForSubpath:bundleExecutableSubpath];
 				if(!mainBinaryEntry)
 				{
-					NSString* errorDescription = @"Unable to locate main binary inside app bundle.";
+					NSString* errorDescription = NSLocalizedString(@"Unable to locate main binary inside app bundle.", nil);
 					return [NSError errorWithDomain:AxiomBoxErrorDomain code:303 userInfo:@{NSLocalizedDescriptionKey : errorDescription}];
 				}
 				
@@ -263,7 +263,7 @@ extern UIImage* imageWithSize(UIImage* image, CGSize size);
 
 				if(![[NSFileManager defaultManager] fileExistsAtPath:bundleExecutablePath])
 				{
-					NSString* errorDescription = @"Unable to locate main binary inside app bundle.";
+					NSString* errorDescription = NSLocalizedString(@"Unable to locate main binary inside app bundle.", nil);
 					return [NSError errorWithDomain:AxiomBoxErrorDomain code:303 userInfo:@{NSLocalizedDescriptionKey : errorDescription}];
 				}
 
@@ -1063,7 +1063,7 @@ extern UIImage* imageWithSize(UIImage* image, CGSize size);
 		NSForegroundColorAttributeName : dangerColor
 	};
 
-	[description appendAttributedString:[[NSAttributedString alloc] initWithString:@"Metadata" attributes:headerAttributes]];
+	[description appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"Metadata", nil) attributes:headerAttributes]];
 	
 	[description appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\nBundle Identifier: %@", bundleId] attributes:bodyAttributes]];
 	[description appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\nVersion: %@", version] attributes:bodyAttributes]];

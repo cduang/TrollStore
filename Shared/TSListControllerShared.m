@@ -34,8 +34,8 @@
 	{
 		if(error)
 		{
-			UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:@"Error" message:[NSString stringWithFormat:@"Error downloading AxiomBox: %@", error] preferredStyle:UIAlertControllerStyleAlert];
-			UIAlertAction* closeAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:nil];
+			UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", nil) message:[NSString stringWithFormat:NSLocalizedString(@"Error downloading AxiomBox: %@", nil), error] preferredStyle:UIAlertControllerStyleAlert];
+			UIAlertAction* closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Close", nil) style:UIAlertActionStyleDefault handler:nil];
 			[errorAlert addAction:closeAction];
 
 			dispatch_async(dispatch_get_main_queue(), ^
@@ -63,11 +63,11 @@
 {
 	if(update)
 	{
-		[TSPresentationDelegate startActivity:@"Updating AxiomBox"];
+		[TSPresentationDelegate startActivity:NSLocalizedString(@"Updating AxiomBox", nil)];
 	}
 	else
 	{
-		[TSPresentationDelegate startActivity:@"Installing AxiomBox"];
+		[TSPresentationDelegate startActivity:NSLocalizedString(@"Installing AxiomBox", nil)];
 	}
 
 	[self downloadAxiomBoxAndRun:^(NSString* tmpTarPath)
@@ -100,8 +100,8 @@
 			{
 				[TSPresentationDelegate stopActivityWithCompletion:^
 				{
-					UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:@"Error" message:[NSString stringWithFormat:@"Error installing AxiomBox: axiomboxhelper returned %d", ret] preferredStyle:UIAlertControllerStyleAlert];
-					UIAlertAction* closeAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:nil];
+					UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Error", nil) message:[NSString stringWithFormat:NSLocalizedString(@"Error installing AxiomBox: axiomboxhelper returned %d", nil), ret] preferredStyle:UIAlertControllerStyleAlert];
+					UIAlertAction* closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Close", nil) style:UIAlertActionStyleDefault handler:nil];
 					[errorAlert addAction:closeAction];
 					[TSPresentationDelegate presentViewController:errorAlert animated:YES completion:nil];
 				}];
@@ -122,7 +122,7 @@
 
 - (void)rebuildIconCachePressed
 {
-	[TSPresentationDelegate startActivity:@"Rebuilding Icon Cache"];
+	[TSPresentationDelegate startActivity:NSLocalizedString(@"Rebuilding Icon Cache", nil)];
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
 	{
@@ -137,7 +137,7 @@
 
 - (void)refreshAppRegistrationsPressed
 {
-	[TSPresentationDelegate startActivity:@"Refreshing"];
+	[TSPresentationDelegate startActivity:NSLocalizedString(@"Refreshing", nil)];
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
 	{
@@ -160,12 +160,12 @@
 	}
 	else
 	{
-		UIAlertController* uninstallWarningAlert = [UIAlertController alertControllerWithTitle:@"Warning" message:@"Uninstalling the persistence helper will revert this app back to it's original state, you will however no longer be able to persistently refresh the AxiomBox app registrations. Continue?" preferredStyle:UIAlertControllerStyleAlert];
+		UIAlertController* uninstallWarningAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Warning", nil) message:NSLocalizedString(@"Uninstalling the persistence helper will revert this app back to it's original state, you will however no longer be able to persistently refresh the AxiomBox app registrations. Continue?", nil) preferredStyle:UIAlertControllerStyleAlert];
 	
-		UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+		UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
 		[uninstallWarningAlert addAction:cancelAction];
 
-		UIAlertAction* continueAction = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
+		UIAlertAction* continueAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Continue", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
 		{
 			spawnRoot(rootHelperPath(), @[@"uninstall-persistence-helper"], nil, nil);
 			exit(0);
@@ -195,9 +195,9 @@
 
 - (void)uninstallAxiomBoxPressed
 {
-	UIAlertController* uninstallAlert = [UIAlertController alertControllerWithTitle:@"Uninstall" message:@"You are about to uninstall AxiomBox, do you want to preserve the apps installed by it?" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController* uninstallAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Uninstall", nil) message:NSLocalizedString(@"You are about to uninstall AxiomBox, do you want to preserve the apps installed by it?", nil) preferredStyle:UIAlertControllerStyleAlert];
 	
-	UIAlertAction* uninstallAllAction = [UIAlertAction actionWithTitle:@"Uninstall AxiomBox, Uninstall Apps" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
+	UIAlertAction* uninstallAllAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Uninstall AxiomBox, Uninstall Apps", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
 	{
 		NSMutableArray* args = [self argsForUninstallingAxiomBox];
 		spawnRoot(rootHelperPath(), args, nil, nil);
@@ -205,7 +205,7 @@
 	}];
 	[uninstallAlert addAction:uninstallAllAction];
 
-	UIAlertAction* preserveAppsAction = [UIAlertAction actionWithTitle:@"Uninstall AxiomBox, Preserve Apps" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
+	UIAlertAction* preserveAppsAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Uninstall AxiomBox, Preserve Apps", nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
 	{
 		NSMutableArray* args = [self argsForUninstallingAxiomBox];
 		[args addObject:@"preserve-apps"];
@@ -214,7 +214,7 @@
 	}];
 	[uninstallAlert addAction:preserveAppsAction];
 
-	UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+	UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
 	[uninstallAlert addAction:cancelAction];
 
 	[TSPresentationDelegate presentViewController:uninstallAlert animated:YES completion:nil];

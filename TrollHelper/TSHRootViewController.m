@@ -64,7 +64,7 @@
 		if(_newerVersion && isInstalled)
 		{
 			// Update AxiomBox
-			PSSpecifier* updateAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:@"Update AxiomBox to %@", _newerVersion]
+			PSSpecifier* updateAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:NSLocalizedString(@"Update AxiomBox to %@", nil), _newerVersion]
 										target:self
 										set:nil
 										get:nil
@@ -86,7 +86,7 @@
 
 		if(isInstalled || trollStoreInstalledAppContainerPaths().count)
 		{
-			PSSpecifier* refreshAppRegistrationsSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Refresh App Registrations"
+			PSSpecifier* refreshAppRegistrationsSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Refresh App Registrations", nil)
 												target:self
 												set:nil
 												get:nil
@@ -100,7 +100,7 @@
 		}
 		if(isInstalled)
 		{
-			PSSpecifier* uninstallAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Uninstall AxiomBox"
+			PSSpecifier* uninstallAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Uninstall AxiomBox", nil)
 										target:self
 										set:nil
 										get:nil
@@ -135,7 +135,7 @@
 			[_specifiers addObject:uninstallHelperGroupSpecifier];
 			lastGroupSpecifier = uninstallHelperGroupSpecifier;
 
-			PSSpecifier* uninstallPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Uninstall Persistence Helper"
+			PSSpecifier* uninstallPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Uninstall Persistence Helper", nil)
 												target:self
 												set:nil
 												get:nil

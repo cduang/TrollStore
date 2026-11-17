@@ -79,10 +79,10 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 		if(_newerVersion)
 		{
 			PSSpecifier* updateAxiomBoxGroupSpecifier = [PSSpecifier emptyGroupSpecifier];
-			updateAxiomBoxGroupSpecifier.name = @"Update Available";
+			updateAxiomBoxGroupSpecifier.name = NSLocalizedString(@"Update Available", nil);
 			[_specifiers addObject:updateAxiomBoxGroupSpecifier];
 
-			PSSpecifier* updateAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:@"Update AxiomBox to %@", _newerVersion]
+			PSSpecifier* updateAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:NSLocalizedString(@"Update AxiomBox to %@", nil), _newerVersion]
 										target:self
 										set:nil
 										get:nil
@@ -98,11 +98,11 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 		if(!_devModeEnabled)
 		{
 			PSSpecifier* enableDevModeGroupSpecifier = [PSSpecifier emptyGroupSpecifier];
-			enableDevModeGroupSpecifier.name = @"Developer Mode";
-			[enableDevModeGroupSpecifier setProperty:@"Some apps require developer mode enabled to launch. This requires a reboot to take effect." forKey:@"footerText"];
+			enableDevModeGroupSpecifier.name = NSLocalizedString(@"Developer Mode", nil);
+			[enableDevModeGroupSpecifier setProperty:NSLocalizedString(@"Some apps require developer mode enabled to launch. This requires a reboot to take effect.", nil) forKey:@"footerText"];
 			[_specifiers addObject:enableDevModeGroupSpecifier];
 
-			PSSpecifier* enableDevModeSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Enable Developer Mode"
+			PSSpecifier* enableDevModeSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Enable Developer Mode", nil)
 										target:self
 										set:nil
 										get:nil
@@ -117,7 +117,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 #endif
 
 		PSSpecifier* utilitiesGroupSpecifier = [PSSpecifier emptyGroupSpecifier];
-		utilitiesGroupSpecifier.name = @"Utilities";
+		utilitiesGroupSpecifier.name = NSLocalizedString(@"Utilities", nil);
 
 		NSString *utilitiesDescription = @"";
 #ifdef TROLLSTORE_LITE
@@ -128,12 +128,12 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 			utilitiesDescription = @"Apps will be registered as System by default since AppSync Unified is not installed. When apps loose their System registration and stop working, press \"Refresh App Registrations\" here to fix them.\n\n";
 		}
 #endif
-		utilitiesDescription = [utilitiesDescription stringByAppendingString:@"If an app does not immediately appear after installation, respring here and it should appear afterwards."];
+		utilitiesDescription = [utilitiesDescription stringByAppendingString:NSLocalizedString(@"If an app does not immediately appear after installation, respring here and it should appear afterwards.", nil)];
 
 		[utilitiesGroupSpecifier setProperty:utilitiesDescription forKey:@"footerText"];
 		[_specifiers addObject:utilitiesGroupSpecifier];
 
-		PSSpecifier* respringButtonSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Respring"
+		PSSpecifier* respringButtonSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Respring", nil)
 											target:self
 											set:nil
 											get:nil
@@ -146,7 +146,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 
 		[_specifiers addObject:respringButtonSpecifier];
 
-		PSSpecifier* refreshAppRegistrationsSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Refresh App Registrations"
+		PSSpecifier* refreshAppRegistrationsSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Refresh App Registrations", nil)
 											target:self
 											set:nil
 											get:nil
@@ -159,7 +159,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 
 		[_specifiers addObject:refreshAppRegistrationsSpecifier];
 
-		PSSpecifier* rebuildIconCacheSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Rebuild Icon Cache"
+		PSSpecifier* rebuildIconCacheSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Rebuild Icon Cache", nil)
 											target:self
 											set:nil
 											get:nil
@@ -174,7 +174,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 
 		NSArray *inactiveBundlePaths = trollStoreInactiveInstalledAppBundlePaths();
 		if (inactiveBundlePaths.count > 0) {
-			PSSpecifier* transferAppsSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:@"Transfer %zu "OTHER_APP_NAME@" %@", inactiveBundlePaths.count, inactiveBundlePaths.count > 1 ? @"Apps" : @"App"]
+			PSSpecifier* transferAppsSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:@"Transfer %zu "OTHER_APP_NAME@" %@", inactiveBundlePaths.count, inactiveBundlePaths.count > 1 ? NSLocalizedString(@"Apps", nil) : @"App"]
 											target:self
 											set:nil
 											get:nil
@@ -202,22 +202,22 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 			}
 
 			PSSpecifier* signingGroupSpecifier = [PSSpecifier emptyGroupSpecifier];
-			signingGroupSpecifier.name = @"Signing";
+			signingGroupSpecifier.name = NSLocalizedString(@"Signing", nil);
 
 			if(ldidInstalled)
 			{
-				[signingGroupSpecifier setProperty:@"ldid is installed and allows AxiomBox to install unsigned IPA files." forKey:@"footerText"];
+				[signingGroupSpecifier setProperty:NSLocalizedString(@"ldid is installed and allows AxiomBox to install unsigned IPA files.", nil) forKey:@"footerText"];
 			}
 			else
 			{
-				[signingGroupSpecifier setProperty:@"In order for AxiomBox to be able to install unsigned IPAs, ldid has to be installed using this button. It can't be directly included in AxiomBox because of licensing issues." forKey:@"footerText"];
+				[signingGroupSpecifier setProperty:NSLocalizedString(@"In order for AxiomBox to be able to install unsigned IPAs, ldid has to be installed using this button. It can't be directly included in AxiomBox because of licensing issues.", nil) forKey:@"footerText"];
 			}
 
 			[_specifiers addObject:signingGroupSpecifier];
 
 			if(ldidInstalled)
 			{
-				NSString* installedTitle = @"ldid: Installed";
+				NSString* installedTitle = NSLocalizedString(@"ldid: Installed", nil);
 				if(ldidVersion)
 				{
 					installedTitle = [NSString stringWithFormat:@"%@ (%@)", installedTitle, ldidVersion];
@@ -236,7 +236,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 
 				if(_newerLdidVersion && ![_newerLdidVersion isEqualToString:ldidVersion])
 				{
-					NSString* updateTitle = [NSString stringWithFormat:@"Update to %@", _newerLdidVersion];
+					NSString* updateTitle = [NSString stringWithFormat:NSLocalizedString(@"Update to %@", nil), _newerLdidVersion];
 					PSSpecifier* ldidUpdateSpecifier = [PSSpecifier preferenceSpecifierNamed:updateTitle
 												target:self
 												set:nil
@@ -252,7 +252,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 			}
 			else
 			{
-				PSSpecifier* installLdidSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Install ldid"
+				PSSpecifier* installLdidSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Install ldid", nil)
 												target:self
 												set:nil
 												get:nil
@@ -267,13 +267,13 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 		//}
 
 		PSSpecifier* persistenceGroupSpecifier = [PSSpecifier emptyGroupSpecifier];
-		persistenceGroupSpecifier.name = @"Persistence";
+		persistenceGroupSpecifier.name = NSLocalizedString(@"Persistence", nil);
 		[_specifiers addObject:persistenceGroupSpecifier];
 
 		if([[NSFileManager defaultManager] fileExistsAtPath:@"/Applications/AxiomBoxHelper.app"])
 		{
 			[persistenceGroupSpecifier setProperty:@"When iOS rebuilds the icon cache, all AxiomBox apps including AxiomBox itself will be reverted to \"User\" state and either disappear or no longer launch. If that happens, you can use the AxiomboxHelper app on the home screen to refresh the app registrations, which will make them work again." forKey:@"footerText"];
-			PSSpecifier* installedPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Helper Installed as Standalone App"
+			PSSpecifier* installedPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Helper Installed as Standalone App", nil)
 											target:self
 											set:nil
 											get:nil
@@ -291,8 +291,8 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 			{
 				NSString* appName = [persistenceApp localizedName];
 
-				[persistenceGroupSpecifier setProperty:[NSString stringWithFormat:@"When iOS rebuilds the icon cache, all AxiomBox apps including AxiomBox itself will be reverted to \"User\" state and either disappear or no longer launch. If that happens, you can use the persistence helper installed into %@ to refresh the app registrations, which will make them work again.", appName] forKey:@"footerText"];
-				PSSpecifier* installedPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:@"Helper Installed into %@", appName]
+				[persistenceGroupSpecifier setProperty:[NSString stringWithFormat:NSLocalizedString(@"When iOS rebuilds the icon cache, all AxiomBox apps including AxiomBox itself will be reverted to \"User\" state and either disappear or no longer launch. If that happens, you can use the persistence helper installed into %@ to refresh the app registrations, which will make them work again.", nil), appName] forKey:@"footerText"];
+				PSSpecifier* installedPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:NSLocalizedString(@"Helper Installed into %@", nil), appName]
 												target:self
 												set:nil
 												get:nil
@@ -303,7 +303,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 				installedPersistenceHelperSpecifier.identifier = @"persistenceHelperInstalled";
 				[_specifiers addObject:installedPersistenceHelperSpecifier];
 
-				PSSpecifier* uninstallPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Uninstall Persistence Helper"
+				PSSpecifier* uninstallPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Uninstall Persistence Helper", nil)
 												target:self
 												set:nil
 												get:nil
@@ -319,9 +319,9 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 			}
 			else
 			{
-				[persistenceGroupSpecifier setProperty:@"When iOS rebuilds the icon cache, all AxiomBox apps including AxiomBox itself will be reverted to \"User\" state and either disappear or no longer launch. The only way to have persistence in a rootless environment is to replace a system application, here you can select a system app to replace with a persistence helper that can be used to refresh the registrations of all AxiomBox related apps in case they disappear or no longer launch." forKey:@"footerText"];
+				[persistenceGroupSpecifier setProperty:NSLocalizedString(@"When iOS rebuilds the icon cache, all AxiomBox apps including AxiomBox itself will be reverted to \"User\" state and either disappear or no longer launch. The only way to have persistence in a rootless environment is to replace a system application, here you can select a system app to replace with a persistence helper that can be used to refresh the registrations of all AxiomBox related apps in case they disappear or no longer launch.", nil) forKey:@"footerText"];
 
-				_installPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Install Persistence Helper"
+				_installPersistenceHelperSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Install Persistence Helper", nil)
 												target:self
 												set:nil
 												get:nil
@@ -337,12 +337,12 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 #endif
 
 		PSSpecifier* installationSettingsGroupSpecifier = [PSSpecifier emptyGroupSpecifier];
-		installationSettingsGroupSpecifier.name = @"Security";
-		[installationSettingsGroupSpecifier setProperty:@"The URL Scheme, when enabled, will allow apps and websites to trigger AxiomBox installations through the apple-magnifier://install?url=<IPA_URL> URL scheme and enable JIT through the apple-magnifier://enable-jit?bundle-id=<BUNDLE_ID> URL scheme." forKey:@"footerText"];
+		installationSettingsGroupSpecifier.name = NSLocalizedString(@"Security", nil);
+		[installationSettingsGroupSpecifier setProperty:NSLocalizedString(@"The URL Scheme, when enabled, will allow apps and websites to trigger AxiomBox installations through the apple-magnifier://install?url=<IPA_URL> URL scheme and enable JIT through the apple-magnifier://enable-jit?bundle-id=<BUNDLE_ID> URL scheme.", nil) forKey:@"footerText"];
 
 		[_specifiers addObject:installationSettingsGroupSpecifier];
 
-		PSSpecifier* URLSchemeToggle = [PSSpecifier preferenceSpecifierNamed:@"URL Scheme Enabled"
+		PSSpecifier* URLSchemeToggle = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"URL Scheme Enabled", nil)
 										target:self
 										set:@selector(setURLSchemeEnabled:forSpecifier:)
 										get:@selector(getURLSchemeEnabledForSpecifier:)
@@ -352,7 +352,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 
 		[_specifiers addObject:URLSchemeToggle];
 
-		PSSpecifier* installAlertConfigurationSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Show Install Confirmation Alert"
+		PSSpecifier* installAlertConfigurationSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Show Install Confirmation Alert", nil)
 										target:self
 										set:@selector(setPreferenceValue:specifier:)
 										get:@selector(readPreferenceValue:)
@@ -373,7 +373,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 		[otherGroupSpecifier setProperty:[NSString stringWithFormat:@"%@ %@\n\n© 2022-2026 Lars Fröder (axiomdev)\n\nAxiomBox is NOT for piracy!\n\nCredits:\nGoogle TAG, @alfiecg_dev: CoreTrust bug\n@lunotech11, @SerenaKit, @tylinux, @TheRealClarity, @dhinakg, @khanhduytran0: Various contributions\n@ProcursusTeam: uicache, ldid\n@cstar_ow: uicache\n@saurik: ldid", APP_NAME, [self getAxiomBoxVersion]] forKey:@"footerText"];
 		[_specifiers addObject:otherGroupSpecifier];
 
-		PSSpecifier* advancedLinkSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Advanced"
+		PSSpecifier* advancedLinkSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Advanced", nil)
 										target:self
 										set:nil
 										get:nil
@@ -384,7 +384,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 		[advancedLinkSpecifier setProperty:@YES forKey:@"enabled"];
 		[_specifiers addObject:advancedLinkSpecifier];
 
-		PSSpecifier* donateSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Donate"
+		PSSpecifier* donateSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Donate", nil)
 										target:self
 										set:nil
 										get:nil
@@ -397,7 +397,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 
 #ifndef TROLLSTORE_LITE
 		// Uninstall AxiomBox
-		PSSpecifier* uninstallAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Uninstall AxiomBox"
+		PSSpecifier* uninstallAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:NSLocalizedString(@"Uninstall AxiomBox", nil)
 										target:self
 										set:nil
 										get:nil
@@ -423,7 +423,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 		[_specifiers addObject:doTheDashSpecifier];*/
 	}
 
-	[(UINavigationItem *)self.navigationItem setTitle:@"Settings"];
+	[(UINavigationItem *)self.navigationItem setTitle:NSLocalizedString(@"Settings", nil)];
 	return _specifiers;
 }
 
@@ -434,7 +434,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 
 - (NSArray*)installationConfirmationNames
 {
-	return @[@"Always (Recommended)", @"Only on Remote URL Installs", @"Never (Not Recommeded)"];
+	return @[NSLocalizedString(@"Always (Recommended)", nil), NSLocalizedString(@"Only on Remote URL Installs", nil), NSLocalizedString(@"Never (Not Recommeded)", nil)];
 }
 
 - (void)respringButtonPressed
@@ -452,17 +452,17 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 	int ret = spawnRoot(rootHelperPath(), @[@"arm-dev-mode"], nil, nil);
 
 	if (ret == 0) {
-		UIAlertController* rebootNotification = [UIAlertController alertControllerWithTitle:@"Reboot Required"
-			message:@"After rebooting, select \"Turn On\" to enable developer mode."
+		UIAlertController* rebootNotification = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Reboot Required", nil)
+			message:NSLocalizedString(@"After rebooting, select \"Turn On\" to enable developer mode.", nil)
 			preferredStyle:UIAlertControllerStyleAlert
 		];
-		UIAlertAction* closeAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleCancel handler:^(UIAlertAction* action)
+		UIAlertAction* closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Close", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction* action)
 		{
 			[self reloadSpecifiers];
 		}];
 		[rebootNotification addAction:closeAction];
 
-		UIAlertAction* rebootAction = [UIAlertAction actionWithTitle:@"Reboot Now" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action)
+		UIAlertAction* rebootAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Reboot Now", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction* action)
 		{
 			spawnRoot(rootHelperPath(), @[@"reboot"], nil, nil);
 		}];
@@ -470,8 +470,8 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 
 		[TSPresentationDelegate presentViewController:rebootNotification animated:YES completion:nil];
 	} else {
-		UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Error %d", ret] message:@"Failed to enable developer mode." preferredStyle:UIAlertControllerStyleAlert];
-		UIAlertAction* closeAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:nil];
+		UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Error %d", nil), ret] message:NSLocalizedString(@"Failed to enable developer mode.", nil) preferredStyle:UIAlertControllerStyleAlert];
+		UIAlertAction* closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Close", nil) style:UIAlertActionStyleDefault handler:nil];
 		[errorAlert addAction:closeAction];
 
 		[TSPresentationDelegate presentViewController:errorAlert animated:YES completion:nil];
@@ -496,7 +496,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 		}
 	}];
 
-	UIAlertController* selectAppAlert = [UIAlertController alertControllerWithTitle:@"Select App" message:@"Select a system app to install the AxiomBox Persistence Helper into. The normal function of the app will not be available, so it is recommended to pick something useless like the Tips app." preferredStyle:UIAlertControllerStyleActionSheet];
+	UIAlertController* selectAppAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Select App", nil) message:@"Select a system app to install the AxiomBox Persistence Helper into. The normal function of the app will not be available, so it is recommended to pick something useless like the Tips app." preferredStyle:UIAlertControllerStyleActionSheet];
 	for(LSApplicationProxy* appProxy in appCandidates)
 	{
 		UIAlertAction* installAction = [UIAlertAction actionWithTitle:[appProxy localizedName] style:UIAlertActionStyleDefault handler:^(UIAlertAction* action)
@@ -513,7 +513,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 	selectAppAlert.popoverPresentationController.sourceView = tableView;
 	selectAppAlert.popoverPresentationController.sourceRect = [tableView rectForRowAtIndexPath:indexPath];
 
-	UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+	UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
 	[selectAppAlert addAction:cancelAction];
 
 	[TSPresentationDelegate presentViewController:selectAppAlert animated:YES completion:nil];
@@ -541,14 +541,14 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 						NSArray *remainingApps = trollStoreInactiveInstalledAppBundlePaths();
 						UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:@"Transfer Failed" message:[NSString stringWithFormat:@"Failed to transfer %zu %@", remainingApps.count, remainingApps.count > 1 ? @"apps" : @"app"] preferredStyle:UIAlertControllerStyleAlert];
 
-						UIAlertAction* copyLogAction = [UIAlertAction actionWithTitle:@"Copy Debug Log" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action)
+						UIAlertAction* copyLogAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Copy Debug Log", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction* action)
 						{
 							UIPasteboard* pasteboard = [UIPasteboard generalPasteboard];
 							pasteboard.string = log;
 						}];
 						[errorAlert addAction:copyLogAction];
 
-						UIAlertAction* closeAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:nil];
+						UIAlertAction* closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Close", nil) style:UIAlertActionStyleDefault handler:nil];
 						[errorAlert addAction:closeAction];
 
 						[TSPresentationDelegate presentViewController:errorAlert animated:YES completion:nil];
@@ -559,7 +559,7 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 	}];
 	[confirmationAlert addAction:transferAction];
 
-	UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+	UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
 	[confirmationAlert addAction:cancelAction];
 
 	[TSPresentationDelegate presentViewController:confirmationAlert animated:YES completion:nil];
@@ -577,14 +577,14 @@ extern NSUserDefaults* trollStoreUserDefaults(void);
 	NSString* newStateString = [newValue boolValue] ? @"enable" : @"disable";
 	spawnRoot(rootHelperPath(), @[@"url-scheme", newStateString], nil, nil);
 
-	UIAlertController* rebuildNoticeAlert = [UIAlertController alertControllerWithTitle:@"URL Scheme Changed" message:@"In order to properly apply the change of the URL scheme setting, rebuilding the icon cache is needed." preferredStyle:UIAlertControllerStyleAlert];
-	UIAlertAction* rebuildNowAction = [UIAlertAction actionWithTitle:@"Rebuild Now" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action)
+	UIAlertController* rebuildNoticeAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"URL Scheme Changed", nil) message:NSLocalizedString(@"In order to properly apply the change of the URL scheme setting, rebuilding the icon cache is needed.", nil) preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction* rebuildNowAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Rebuild Now", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction* action)
 	{
 		[self rebuildIconCachePressed];
 	}];
 	[rebuildNoticeAlert addAction:rebuildNowAction];
 
-	UIAlertAction* rebuildLaterAction = [UIAlertAction actionWithTitle:@"Rebuild Later" style:UIAlertActionStyleCancel handler:nil];
+	UIAlertAction* rebuildLaterAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Rebuild Later", nil) style:UIAlertActionStyleCancel handler:nil];
 	[rebuildNoticeAlert addAction:rebuildLaterAction];
 
 	[TSPresentationDelegate presentViewController:rebuildNoticeAlert animated:YES completion:nil];

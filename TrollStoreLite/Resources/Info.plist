@@ -184,5 +184,13 @@
 	<array>
 		<string>axiomboxhelper</string>
 	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>zh-Hans</string>
+		<string>zh-Hant</string>
+	</array>
 </dict>
 </plist>
