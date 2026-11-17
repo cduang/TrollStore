@@ -45,14 +45,16 @@ jobs:
       - name: Install iOS 16.5 SDK
         # Makefiles pin TARGET := iphone:clang:16.5:14.0, so the patched
         # iPhoneOS16.5.sdk (with private symbols) from theos/sdks is required.
-        # sparse-checkout keeps the download small (the repo holds many SDKs).
+        # Clone into a SEPARATE temp dir: theos already ships a non-empty sdks/
+        # directory, so cloning directly into $THEOS/sdks fails.
         run: |
-          mkdir -p "$HOME/theos/sdks"
-          git clone --depth 1 --filter=blob:none --sparse https://github.com/theos/sdks.git "$HOME/theos/sdks"
-          cd "$HOME/theos/sdks"
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/theos/sdks.git "$HOME/sdks-src"
+          cd "$HOME/sdks-src"
           git sparse-checkout set iPhoneOS16.5.sdk
+          mkdir -p "$THEOS/sdks"
+          cp -R "$HOME/sdks-src/iPhoneOS16.5.sdk" "$THEOS/sdks/"
           echo "== installed SDKs =="
-          ls -1 "$HOME/theos/sdks"
+          ls -1 "$THEOS/sdks"
 
       - name: Verify toolchain
         run: |
