@@ -1,9 +1,9 @@
-Package: com.opa334.trollstorelite
-Name: TrollStore Lite
+Package: com.axiomdev.axiomboxlite
+Name: AxiomBox Lite
 Version: 2.1.1
 Architecture: iphoneos-arm
-Description: TrollStore for jailbroken iOS
+Description: AxiomBox for jailbroken iOS
 Depends: ldid
-Maintainer: opa334
-Author: opa334
+Maintainer: axiomdev
+Author: axiomdev
 Section: Applications

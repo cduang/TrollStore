@@ -3,15 +3,15 @@
 #import <Preferences/PSSpecifier.h>
 
 @interface TSListControllerShared : PSListController
-- (BOOL)isTrollStore;
-- (NSString*)getTrollStoreVersion;
-- (void)downloadTrollStoreAndRun:(void (^)(NSString* localTrollStoreTarPath))doHandler;
-- (void)installTrollStorePressed;
-- (void)updateTrollStorePressed;
+- (BOOL)isAxiomBox;
+- (NSString*)getAxiomBoxVersion;
+- (void)downloadAxiomBoxAndRun:(void (^)(NSString* localAxiomBoxTarPath))doHandler;
+- (void)installAxiomBoxPressed;
+- (void)updateAxiomBoxPressed;
 - (void)rebuildIconCachePressed;
 - (void)refreshAppRegistrationsPressed;
 - (void)uninstallPersistenceHelperPressed;
 - (void)handleUninstallation;
-- (NSMutableArray*)argsForUninstallingTrollStore;
-- (void)uninstallTrollStorePressed;
+- (NSMutableArray*)argsForUninstallingAxiomBox;
+- (void)uninstallAxiomBoxPressed;
 @end

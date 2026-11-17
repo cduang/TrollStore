@@ -1,9 +1,9 @@
-Package: com.opa334.trollstoreroothelper
-Name: trollstoreroothelper
+Package: com.axiomdev.axiombox.roothelper
+Name: axiomboxroothelper
 Version: 2.1.1
 Architecture: iphoneos-arm
 Description: An awesome tool of some sort!!
-Maintainer: opa334
-Author: opa334
+Maintainer: axiomdev
+Author: axiomdev
 Section: System
 Tag: role::hacker

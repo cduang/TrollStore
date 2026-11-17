@@ -63,7 +63,7 @@ NSString* rootHelperPath(void)
 #else
 NSString* rootHelperPath(void)
 {
-	return [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"trollstorehelper"];
+	return [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"axiomboxhelper"];
 }
 #endif
 
@@ -159,7 +159,7 @@ int spawnRoot(NSString* path, NSArray* args, NSString** stdOut, NSString** stdEr
 	dispatch_queue_t logQueue;
 	if(stdOut || stdErr)
 	{
-		logQueue = dispatch_queue_create("com.opa334.TrollStore.LogCollector", NULL);
+		logQueue = dispatch_queue_create("com.axiomdev.AxiomBox.LogCollector", NULL);
 		sema = dispatch_semaphore_create(0);
 
 		int outPipe = out[0];
@@ -325,14 +325,14 @@ void github_fetchLatestVersion(NSString* repo, void (^completionHandler)(NSStrin
 	[task resume];
 }
 
-void fetchLatestTrollStoreVersion(void (^completionHandler)(NSString* latestVersion))
+void fetchLatestAxiomBoxVersion(void (^completionHandler)(NSString* latestVersion))
 {
-	github_fetchLatestVersion(@"opa334/TrollStore", completionHandler);
+	github_fetchLatestVersion(@"axiomdev/AxiomBox", completionHandler);
 }
 
 void fetchLatestLdidVersion(void (^completionHandler)(NSString* latestVersion))
 {
-	github_fetchLatestVersion(@"opa334/ldid", completionHandler);
+	github_fetchLatestVersion(@"axiomdev/ldid", completionHandler);
 }
 
 NSArray* trollStoreInstalledAppContainerPathsInternal(NSString *marker)
@@ -359,8 +359,8 @@ NSArray* trollStoreInstalledAppContainerPathsInternal(NSString *marker)
 			NSString* trollStoreMark = [containerPath stringByAppendingPathComponent:marker];
 			if([[NSFileManager defaultManager] fileExistsAtPath:trollStoreMark])
 			{
-				NSString* trollStoreApp = [containerPath stringByAppendingPathComponent:@"TrollStore.app"];
-				NSString* trollStoreLiteApp = [containerPath stringByAppendingPathComponent:@"TrollStoreLite.app"];
+				NSString* trollStoreApp = [containerPath stringByAppendingPathComponent:@"AxiomBox.app"];
+				NSString* trollStoreLiteApp = [containerPath stringByAppendingPathComponent:@"AxiomBoxLite.app"];
 				if(![[NSFileManager defaultManager] fileExistsAtPath:trollStoreApp] && ![[NSFileManager defaultManager] fileExistsAtPath:trollStoreLiteApp])
 				{
 					[appContainerPaths addObject:containerPath];
@@ -416,7 +416,7 @@ NSString* trollStorePath()
 
 NSString* trollStoreAppPath()
 {
-	return [trollStorePath() stringByAppendingPathComponent:@"TrollStore.app"];
+	return [trollStorePath() stringByAppendingPathComponent:@"AxiomBox.app"];
 }
 
 BOOL isRemovableSystemApp(NSString* appId)
@@ -434,7 +434,7 @@ LSApplicationProxy* findPersistenceHelperApp(PERSISTENCE_HELPER_TYPE allowedType
 		{
 			if([appProxy.bundleURL.path hasPrefix:@"/private/var/containers"])
 			{
-				NSURL* trollStorePersistenceMarkURL = [appProxy.bundleURL URLByAppendingPathComponent:@".TrollStorePersistenceHelper"];
+				NSURL* trollStorePersistenceMarkURL = [appProxy.bundleURL URLByAppendingPathComponent:@".AxiomBoxHelper"];
 				if([trollStorePersistenceMarkURL checkResourceIsReachableAndReturnError:nil])
 				{
 					outProxy = appProxy;

@@ -4,7 +4,7 @@
 
 @implementation TSHRootViewController
 
-- (BOOL)isTrollStore
+- (BOOL)isAxiomBox
 {
 	return NO;
 }
@@ -16,9 +16,9 @@
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSpecifiers) name:UIApplicationWillEnterForegroundNotification object:nil];
 
-	fetchLatestTrollStoreVersion(^(NSString* latestVersion)
+	fetchLatestAxiomBoxVersion(^(NSString* latestVersion)
 	{
-		NSString* currentVersion = [self getTrollStoreVersion];
+		NSString* currentVersion = [self getAxiomBoxVersion];
 		NSComparisonResult result = [currentVersion compare:latestVersion options:NSNumericSearch];
 		if(result == NSOrderedAscending)
 		{
@@ -38,19 +38,19 @@
 		_specifiers = [NSMutableArray new];
 
 		#ifdef LEGACY_CT_BUG
-		NSString* credits = @"Powered by Fugu15 CoreTrust & installd bugs, thanks to @LinusHenze\n\n© 2022-2026 Lars Fröder (opa334)";
+		NSString* credits = @"Powered by Fugu15 CoreTrust & installd bugs, thanks to @LinusHenze\n\n© 2022-2026 Lars Fröder (axiomdev)";
 		#else
-		NSString* credits = @"Powered by CVE-2023-41991, originally discovered by Google TAG, rediscovered via patchdiffing by @alfiecg_dev\n\n© 2022-2026 Lars Fröder (opa334)";
+		NSString* credits = @"Powered by CVE-2023-41991, originally discovered by Google TAG, rediscovered via patchdiffing by @alfiecg_dev\n\n© 2022-2026 Lars Fröder (axiomdev)";
 		#endif
 
 		PSSpecifier* infoGroupSpecifier = [PSSpecifier emptyGroupSpecifier];
 		infoGroupSpecifier.name = @"Info";
 		[_specifiers addObject:infoGroupSpecifier];
 
-		PSSpecifier* infoSpecifier = [PSSpecifier preferenceSpecifierNamed:@"TrollStore"
+		PSSpecifier* infoSpecifier = [PSSpecifier preferenceSpecifierNamed:@"AxiomBox"
 											target:self
 											set:nil
-											get:@selector(getTrollStoreInfoString)
+											get:@selector(getAxiomBoxInfoString)
 											detail:nil
 											cell:PSTitleValueCell
 											edit:nil];
@@ -63,18 +63,18 @@
 
 		if(_newerVersion && isInstalled)
 		{
-			// Update TrollStore
-			PSSpecifier* updateTrollStoreSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:@"Update TrollStore to %@", _newerVersion]
+			// Update AxiomBox
+			PSSpecifier* updateAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:[NSString stringWithFormat:@"Update AxiomBox to %@", _newerVersion]
 										target:self
 										set:nil
 										get:nil
 										detail:nil
 										cell:PSButtonCell
 										edit:nil];
-			updateTrollStoreSpecifier.identifier = @"updateTrollStore";
-			[updateTrollStoreSpecifier setProperty:@YES forKey:@"enabled"];
-			updateTrollStoreSpecifier.buttonAction = @selector(updateTrollStorePressed);
-			[_specifiers addObject:updateTrollStoreSpecifier];
+			updateAxiomBoxSpecifier.identifier = @"updateAxiomBox";
+			[updateAxiomBoxSpecifier setProperty:@YES forKey:@"enabled"];
+			updateAxiomBoxSpecifier.buttonAction = @selector(updateAxiomBoxPressed);
+			[_specifiers addObject:updateAxiomBoxSpecifier];
 		}
 
 		PSSpecifier* lastGroupSpecifier;
@@ -100,35 +100,35 @@
 		}
 		if(isInstalled)
 		{
-			PSSpecifier* uninstallTrollStoreSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Uninstall TrollStore"
+			PSSpecifier* uninstallAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Uninstall AxiomBox"
 										target:self
 										set:nil
 										get:nil
 										detail:nil
 										cell:PSButtonCell
 										edit:nil];
-			uninstallTrollStoreSpecifier.identifier = @"uninstallTrollStore";
-			[uninstallTrollStoreSpecifier setProperty:@YES forKey:@"enabled"];
-			[uninstallTrollStoreSpecifier setProperty:NSClassFromString(@"PSDeleteButtonCell") forKey:@"cellClass"];
-			uninstallTrollStoreSpecifier.buttonAction = @selector(uninstallTrollStorePressed);
-			[_specifiers addObject:uninstallTrollStoreSpecifier];
+			uninstallAxiomBoxSpecifier.identifier = @"uninstallAxiomBox";
+			[uninstallAxiomBoxSpecifier setProperty:@YES forKey:@"enabled"];
+			[uninstallAxiomBoxSpecifier setProperty:NSClassFromString(@"PSDeleteButtonCell") forKey:@"cellClass"];
+			uninstallAxiomBoxSpecifier.buttonAction = @selector(uninstallAxiomBoxPressed);
+			[_specifiers addObject:uninstallAxiomBoxSpecifier];
 		}
 		else
 		{
-			PSSpecifier* installTrollStoreSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Install TrollStore"
+			PSSpecifier* installAxiomBoxSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Install AxiomBox"
 												target:self
 												set:nil
 												get:nil
 												detail:nil
 												cell:PSButtonCell
 												edit:nil];
-			installTrollStoreSpecifier.identifier = @"installTrollStore";
-			[installTrollStoreSpecifier setProperty:@YES forKey:@"enabled"];
-			installTrollStoreSpecifier.buttonAction = @selector(installTrollStorePressed);
-			[_specifiers addObject:installTrollStoreSpecifier];
+			installAxiomBoxSpecifier.identifier = @"installAxiomBox";
+			[installAxiomBoxSpecifier setProperty:@YES forKey:@"enabled"];
+			installAxiomBoxSpecifier.buttonAction = @selector(installAxiomBoxPressed);
+			[_specifiers addObject:installAxiomBoxSpecifier];
 		}
 
-		NSString* backupPath = [getExecutablePath() stringByAppendingString:@"_TROLLSTORE_BACKUP"];
+		NSString* backupPath = [getExecutablePath() stringByAppendingString:@"_AXIOMBOX_BACKUP"];
 		if([[NSFileManager defaultManager] fileExistsAtPath:backupPath])
 		{
 			PSSpecifier* uninstallHelperGroupSpecifier = [PSSpecifier emptyGroupSpecifier];
@@ -153,7 +153,7 @@
 		LSApplicationProxy* persistenceHelperProxy = findPersistenceHelperApp(PERSISTENCE_HELPER_TYPE_ALL);
 		BOOL isRegistered = [persistenceHelperProxy.bundleIdentifier isEqualToString:NSBundle.mainBundle.bundleIdentifier];
 
-		if((isRegistered || !persistenceHelperProxy) && ![[NSFileManager defaultManager] fileExistsAtPath:@"/Applications/TrollStorePersistenceHelper.app"])
+		if((isRegistered || !persistenceHelperProxy) && ![[NSFileManager defaultManager] fileExistsAtPath:@"/Applications/AxiomBoxHelper.app"])
 		{
 			PSSpecifier* registerUnregisterGroupSpecifier = [PSSpecifier emptyGroupSpecifier];
 			lastGroupSpecifier = nil;
@@ -163,7 +163,7 @@
 
 			if(isRegistered)
 			{
-				bottomText = @"This app is registered as the TrollStore persistence helper and can be used to fix TrollStore app registrations in case they revert back to \"User\" state and the apps say they're unavailable.";
+				bottomText = @"This app is registered as the AxiomBox persistence helper and can be used to fix AxiomBox app registrations in case they revert back to \"User\" state and the apps say they're unavailable.";
 				registerUnregisterSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Unregister Persistence Helper"
 												target:self
 												set:nil
@@ -178,7 +178,7 @@
 			}
 			else if(!persistenceHelperProxy)
 			{
-				bottomText = @"If you want to use this app as the TrollStore persistence helper, you can register it here.";
+				bottomText = @"If you want to use this app as the AxiomBox persistence helper, you can register it here.";
 				registerUnregisterSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Register Persistence Helper"
 												target:self
 												set:nil
@@ -205,13 +205,13 @@
 		}
 	}
 	
-	[(UINavigationItem *)self.navigationItem setTitle:@"TrollStore Helper"];
+	[(UINavigationItem *)self.navigationItem setTitle:@"AxiomBox Helper"];
 	return _specifiers;
 }
 
-- (NSString*)getTrollStoreInfoString
+- (NSString*)getAxiomBoxInfoString
 {
-	NSString* version = [self getTrollStoreVersion];
+	NSString* version = [self getAxiomBoxVersion];
 	if(!version)
 	{
 		return @"Not Installed";

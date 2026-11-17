@@ -4,14 +4,14 @@
 
 @implementation TSListControllerShared
 
-- (BOOL)isTrollStore
+- (BOOL)isAxiomBox
 {
 	return YES;
 }
 
-- (NSString*)getTrollStoreVersion
+- (NSString*)getAxiomBoxVersion
 {
-	if([self isTrollStore])
+	if([self isAxiomBox])
 	{
 		return [NSBundle.mainBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
 	}
@@ -25,16 +25,16 @@
 	}
 }
 
-- (void)downloadTrollStoreAndRun:(void (^)(NSString* localTrollStoreTarPath))doHandler
+- (void)downloadAxiomBoxAndRun:(void (^)(NSString* localAxiomBoxTarPath))doHandler
 {
-	NSURL* trollStoreURL = [NSURL URLWithString:@"https://github.com/opa334/TrollStore/releases/latest/download/TrollStore.tar"];
+	NSURL* trollStoreURL = [NSURL URLWithString:@"https://github.com/axiomdev/AxiomBox/releases/latest/download/AxiomBox.tar"];
 	NSURLRequest* trollStoreRequest = [NSURLRequest requestWithURL:trollStoreURL];
 
 	NSURLSessionDownloadTask* downloadTask = [NSURLSession.sharedSession downloadTaskWithRequest:trollStoreRequest completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
 	{
 		if(error)
 		{
-			UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:@"Error" message:[NSString stringWithFormat:@"Error downloading TrollStore: %@", error] preferredStyle:UIAlertControllerStyleAlert];
+			UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:@"Error" message:[NSString stringWithFormat:@"Error downloading AxiomBox: %@", error] preferredStyle:UIAlertControllerStyleAlert];
 			UIAlertAction* closeAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:nil];
 			[errorAlert addAction:closeAction];
 
@@ -48,7 +48,7 @@
 		}
 		else
 		{
-			NSString* tarTmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"TrollStore.tar"];
+			NSString* tarTmpPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"AxiomBox.tar"];
 			[[NSFileManager defaultManager] removeItemAtPath:tarTmpPath error:nil];
 			[[NSFileManager defaultManager] copyItemAtPath:location.path toPath:tarTmpPath error:nil];
 
@@ -59,27 +59,27 @@
 	[downloadTask resume];
 }
 
-- (void)_installTrollStoreComingFromUpdateFlow:(BOOL)update
+- (void)_installAxiomBoxComingFromUpdateFlow:(BOOL)update
 {
 	if(update)
 	{
-		[TSPresentationDelegate startActivity:@"Updating TrollStore"];
+		[TSPresentationDelegate startActivity:@"Updating AxiomBox"];
 	}
 	else
 	{
-		[TSPresentationDelegate startActivity:@"Installing TrollStore"];
+		[TSPresentationDelegate startActivity:@"Installing AxiomBox"];
 	}
 
-	[self downloadTrollStoreAndRun:^(NSString* tmpTarPath)
+	[self downloadAxiomBoxAndRun:^(NSString* tmpTarPath)
 	{
-		int ret = spawnRoot(rootHelperPath(), @[@"install-trollstore", tmpTarPath], nil, nil);
+		int ret = spawnRoot(rootHelperPath(), @[@"install-axiombox", tmpTarPath], nil, nil);
 		[[NSFileManager defaultManager] removeItemAtPath:tmpTarPath error:nil];
 
 		if(ret == 0)
 		{
 			respring();
 
-			if([self isTrollStore])
+			if([self isAxiomBox])
 			{
 				exit(0);
 			}
@@ -100,7 +100,7 @@
 			{
 				[TSPresentationDelegate stopActivityWithCompletion:^
 				{
-					UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:@"Error" message:[NSString stringWithFormat:@"Error installing TrollStore: trollstorehelper returned %d", ret] preferredStyle:UIAlertControllerStyleAlert];
+					UIAlertController* errorAlert = [UIAlertController alertControllerWithTitle:@"Error" message:[NSString stringWithFormat:@"Error installing AxiomBox: axiomboxhelper returned %d", ret] preferredStyle:UIAlertControllerStyleAlert];
 					UIAlertAction* closeAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDefault handler:nil];
 					[errorAlert addAction:closeAction];
 					[TSPresentationDelegate presentViewController:errorAlert animated:YES completion:nil];
@@ -110,14 +110,14 @@
 	}];
 }
 
-- (void)installTrollStorePressed
+- (void)installAxiomBoxPressed
 {
-	[self _installTrollStoreComingFromUpdateFlow:NO];
+	[self _installAxiomBoxComingFromUpdateFlow:NO];
 }
 
-- (void)updateTrollStorePressed
+- (void)updateAxiomBoxPressed
 {
-	[self _installTrollStoreComingFromUpdateFlow:YES];
+	[self _installAxiomBoxComingFromUpdateFlow:YES];
 }
 
 - (void)rebuildIconCachePressed
@@ -153,14 +153,14 @@
 
 - (void)uninstallPersistenceHelperPressed
 {
-	if([self isTrollStore])
+	if([self isAxiomBox])
 	{
 		spawnRoot(rootHelperPath(), @[@"uninstall-persistence-helper"], nil, nil);
 		[self reloadSpecifiers];
 	}
 	else
 	{
-		UIAlertController* uninstallWarningAlert = [UIAlertController alertControllerWithTitle:@"Warning" message:@"Uninstalling the persistence helper will revert this app back to it's original state, you will however no longer be able to persistently refresh the TrollStore app registrations. Continue?" preferredStyle:UIAlertControllerStyleAlert];
+		UIAlertController* uninstallWarningAlert = [UIAlertController alertControllerWithTitle:@"Warning" message:@"Uninstalling the persistence helper will revert this app back to it's original state, you will however no longer be able to persistently refresh the AxiomBox app registrations. Continue?" preferredStyle:UIAlertControllerStyleAlert];
 	
 		UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
 		[uninstallWarningAlert addAction:cancelAction];
@@ -178,7 +178,7 @@
 
 - (void)handleUninstallation
 {
-	if([self isTrollStore])
+	if([self isAxiomBox])
 	{
 		exit(0);
 	}
@@ -188,26 +188,26 @@
 	}
 }
 
-- (NSMutableArray*)argsForUninstallingTrollStore
+- (NSMutableArray*)argsForUninstallingAxiomBox
 {
-	return @[@"uninstall-trollstore"].mutableCopy;
+	return @[@"uninstall-axiombox"].mutableCopy;
 }
 
-- (void)uninstallTrollStorePressed
+- (void)uninstallAxiomBoxPressed
 {
-	UIAlertController* uninstallAlert = [UIAlertController alertControllerWithTitle:@"Uninstall" message:@"You are about to uninstall TrollStore, do you want to preserve the apps installed by it?" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController* uninstallAlert = [UIAlertController alertControllerWithTitle:@"Uninstall" message:@"You are about to uninstall AxiomBox, do you want to preserve the apps installed by it?" preferredStyle:UIAlertControllerStyleAlert];
 	
-	UIAlertAction* uninstallAllAction = [UIAlertAction actionWithTitle:@"Uninstall TrollStore, Uninstall Apps" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
+	UIAlertAction* uninstallAllAction = [UIAlertAction actionWithTitle:@"Uninstall AxiomBox, Uninstall Apps" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
 	{
-		NSMutableArray* args = [self argsForUninstallingTrollStore];
+		NSMutableArray* args = [self argsForUninstallingAxiomBox];
 		spawnRoot(rootHelperPath(), args, nil, nil);
 		[self handleUninstallation];
 	}];
 	[uninstallAlert addAction:uninstallAllAction];
 
-	UIAlertAction* preserveAppsAction = [UIAlertAction actionWithTitle:@"Uninstall TrollStore, Preserve Apps" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
+	UIAlertAction* preserveAppsAction = [UIAlertAction actionWithTitle:@"Uninstall AxiomBox, Preserve Apps" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
 	{
-		NSMutableArray* args = [self argsForUninstallingTrollStore];
+		NSMutableArray* args = [self argsForUninstallingAxiomBox];
 		[args addObject:@"preserve-apps"];
 		spawnRoot(rootHelperPath(), args, nil, nil);
 		[self handleUninstallation];

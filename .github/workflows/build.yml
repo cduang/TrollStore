@@ -1,0 +1,64 @@
+name: Build AxiomBox (TrollStore)
+
+on:
+  push:
+    branches: [ main, master, mod/** ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-13
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Select Xcode 15
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.2'
+
+      - name: Install build dependencies
+        run: |
+          brew update
+          brew install dpkg ldid make libplist openssl@3 libarchive pkg-config
+          # GNU make 放到 PATH 前面（theos 需要 gmake）
+          echo "$(brew --prefix make)/libexec/gnubin" >> "$GITHUB_PATH"
+
+      - name: Setup Theos
+        run: |
+          git clone --recursive https://github.com/theos/theos.git $HOME/theos
+          echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
+          # iOS SDK（编译目标 16.x，兼容 iOS 14+ 部署）
+          git clone --depth 1 https://github.com/theos/sdks.git $HOME/theos/sdks
+
+      - name: Verify SDKs
+        run: ls "$THEOS/sdks" | head -20
+
+      - name: Build (main chain, no victim/installer IPA)
+        run: |
+          make pre_build
+          make make_fastPathSign
+          make make_roothelper
+          make make_axiombox FINALPACKAGE=1
+          make make_axiombox_lite FINALPACKAGE=1
+          make assemble_axiombox
+
+      - name: List artifacts
+        run: ls -lh _build/
+
+      - name: Upload TrollStore tar (install via TrollStore)
+        uses: actions/upload-artifact@v4
+        with:
+          name: AxiomBox-tar
+          path: _build/AxiomBox.tar
+          if-no-files-found: error
+
+      - name: Upload packages (deb, optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: AxiomBox-debs
+          path: packages/*.deb
+          if-no-files-found: warn

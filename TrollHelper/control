@@ -1,8 +1,8 @@
-Package: com.opa334.trollstorehelper
-Name: TrollStore Helper
+Package: com.axiomdev.axiombox.helperalt
+Name: AxiomBox Helper
 Version: 2.1.1
 Architecture: iphoneos-arm
-Description: Helper utility to install and manage TrollStore!
-Maintainer: opa334
-Author: opa334
+Description: Helper utility to install and manage AxiomBox!
+Maintainer: axiomdev
+Author: axiomdev
 Section: Applications

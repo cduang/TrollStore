@@ -1,8 +1,8 @@
-Package: com.opa334.trollstore
-Name: TrollStore
+Package: com.axiomdev.axiombox
+Name: AxiomBox
 Version: 2.1.1
 Architecture: iphoneos-arm
 Description: An awesome application!
-Maintainer: opa334
-Author: opa334
+Maintainer: axiomdev
+Author: axiomdev
 Section: Utilities
